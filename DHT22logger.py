@@ -85,25 +85,26 @@ def getWeeklyAverageTemp(sensor):
 def emailWarning(msg, msgType):
 	
 	configurations = getConfigurations()
-	
-	fromaddr = configurations["mailinfo"][0]["senderaddress"]
-	toaddrs = configurations["mailinfo"][0]["receiveraddress"]
-	username = configurations["mailinfo"][0]["username"]
-	password = configurations["mailinfo"][0]["password"]
-	subj = configurations["mailinfo"][0]["subjectwarning"]
-		
-	if msgType is 'Info':
-		subj = configurations["mailinfo"][0]["subjectmessage"]
-	
-	# Message to be sended with subject field
-	message = 'Subject: %s\n\n%s' % (subj,msg)
+        use_email = configurations["mailinfo"]["use_email"]	
+        if use_email == "y":
+            fromaddr = configurations["mailinfo"][0]["senderaddress"]
+            toaddrs = configurations["mailinfo"][0]["receiveraddress"]
+            username = configurations["mailinfo"][0]["username"]
+            password = configurations["mailinfo"][0]["password"]
+            subj = configurations["mailinfo"][0]["subjectwarning"]
+                    
+            if msgType is 'Info':
+                    subj = configurations["mailinfo"][0]["subjectmessage"]
+            
+            # Message to be sended with subject field
+            message = 'Subject: %s\n\n%s' % (subj,msg)
 
-	# The actual mail sending
-	server = smtplib.SMTP('smtp.gmail.com',587)
-	server.starttls()
-	server.login(username,password)
-	server.sendmail(fromaddr, toaddrs, message)
-	server.quit()
+            # The actual mail sending
+            server = smtplib.SMTP('smtp.gmail.com',587)
+            server.starttls()
+            server.login(username,password)
+            server.sendmail(fromaddr, toaddrs, message)
+            server.quit()
 
 	return
 	
